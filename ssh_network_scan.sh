@@ -21,6 +21,14 @@ check_nmap_installed() {
     fi
 }
 
+# Function to check if nmap is installed
+check_nmap_installed() {
+    if ! command -v nmap &> /dev/null; then
+        echo "nmap could not be found. Please install nmap to use this script."
+        exit 1
+    fi
+}
+
 # Check if nmap is installed
 check_nmap_installed
 
