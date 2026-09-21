@@ -3,7 +3,14 @@
 # Script Name: ssh_network_scan.sh
 # Purpose: Scan the local network for SSH servers on common ports (22, 222, 443, 53, 2222).
 # Required System Tools: nmap
-# Version: 1.0
+# Version: 1.1
+
+# Internal Changelog:
+# Version 1.1:
+# - Added a function to dynamically determine the network subnet based on the default gateway.
+# - Updated the script to use the dynamically determined network subnet for scanning.
+# Version 1.0:
+# - Initial release of the script.
 
 # Check if nmap is installed
 if ! command -v nmap &> /dev/null
