@@ -3,9 +3,13 @@
 # Script Name: ssh_network_scan.sh
 # Purpose: Scan the local network for SSH servers on common ports (22, 222, 443, 53, 2222).
 # Required System Tools: nmap
-# Version: 1.2
+# Version: 1.3
 
 # Internal Changelog:
+# Version 1.3:
+# - Added a usage() function.
+# - Encapsulated main logic in a main() function.
+# - Added SCRIPT_NAME variable.
 # Version 1.2:
 # - Moved nmap check to a function.
 # Version 1.1:
@@ -15,6 +19,16 @@
 # Version 1.0:
 # - Initial release of the script.
 
+SCRIPT_NAME="ssh_network_scan.sh"
+VERSION="1.3"
+
+# Function to display usage information
+usage() {
+    echo "Usage: $SCRIPT_NAME"
+    echo "Scans the local network for SSH servers on common ports (22, 222, 443, 53, 2222)."
+    echo "Required System Tools: nmap"
+}
+
 # Function to check if nmap is installed
 check_nmap_installed() {
     if ! command -v nmap &> /dev/null; then
@@ -22,9 +36,6 @@ check_nmap_installed() {
         exit 1
     fi
 }
-
-# Check if nmap is installed
-check_nmap_installed
 
 # Function to get the default gateway and determine the network subnet
 get_network_subnet() {
@@ -42,18 +53,43 @@ get_network_subnet() {
     fi
 }
 
-# Get the network subnet
-NETWORK_RANGE=$(get_network_subnet)
-
-# Define the ports to scan
-PORTS="22,222,443,53,2222"
-
 # Function to perform the SSH scan
 perform_ssh_scan() {
     echo "Scanning network $NETWORK_RANGE for SSH servers on ports $PORTS..."
     nmap -p $PORTS --open $NETWORK_RANGE | grep -E "open\s+ssh"
 }
 
-# Perform the scan
-perform_ssh_scan
+# Main function to orchestrate the script's execution
+main() {
+    # Parse command-line options
+    while getopts ":h" opt; do
+        case ${opt} in
+            h )
+                usage
+                exit 0
+                ;;
+            \? )
+                echo "Invalid option: -$OPTARG" 1>&2
+                usage
+                exit 1
+                ;;
+        esac
+    done
+    shift $((OPTIND -1))
+
+    # Check if nmap is installed
+    check_nmap_installed
+
+    # Get the network subnet
+    NETWORK_RANGE=$(get_network_subnet)
+
+    # Define the ports to scan
+    PORTS="22,222,443,53,2222"
+
+    # Perform the scan
+    perform_ssh_scan
+}
+
+# Call the main function with all command-line arguments
+main "$@"
 
