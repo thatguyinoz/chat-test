@@ -7,7 +7,7 @@
 
 # Internal Changelog:
 # Version 1.2:
-# - Incremented version to 1.2.
+# - moved nmap check to a function.
 # - Removed duplicate function definition for `check_nmap_installed`.
 # Version 1.1:
 # - Added a function to dynamically determine the network subnet based on the default gateway.
