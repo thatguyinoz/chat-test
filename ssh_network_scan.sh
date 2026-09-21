@@ -12,9 +12,24 @@ then
     exit 1
 fi
 
-# Define the local network range
-# You can modify this to match your network range
-NETWORK_RANGE="192.168.0.0/24"
+# Function to get the default gateway and determine the network subnet
+get_network_subnet() {
+    # Get the default gateway
+    DEFAULT_GATEWAY=$(ip route | grep default | awk '{print $3}')
+    
+    # Determine the network subnet based on the default gateway
+    if [[ -n $DEFAULT_GATEWAY ]]; then
+        # Extract the network part of the IP address
+        NETWORK_SUBNET=$(echo $DEFAULT_GATEWAY | awk -F. '{print $1"."$2"."$3".0/24"}')
+        echo $NETWORK_SUBNET
+    else
+        echo "Could not determine the default gateway."
+        exit 1
+    fi
+}
+
+# Get the network subnet
+NETWORK_RANGE=$(get_network_subnet)
 
 # Define the ports to scan
 PORTS="22,222,443,53,2222"
