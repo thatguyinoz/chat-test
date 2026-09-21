@@ -42,17 +42,11 @@ NETWORK_RANGE=$(get_network_subnet)
 # Define the ports to scan
 PORTS="22,222,443,53,2222"
 
-# Define the ports to scan
-PORTS="22,222,443,53,2222"
-
 # Function to perform the SSH scan
 perform_ssh_scan() {
     echo "Scanning network $NETWORK_RANGE for SSH servers on ports $PORTS..."
     nmap -p $PORTS --open $NETWORK_RANGE | grep -E "open\s+ssh"
 }
-
-# Perform the scan
-perform_ssh_scan
 
 # Perform the scan
 perform_ssh_scan
