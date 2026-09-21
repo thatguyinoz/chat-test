@@ -13,12 +13,16 @@
 # Version 1.0:
 # - Initial release of the script.
 
+# Function to check if nmap is installed
+check_nmap_installed() {
+    if ! command -v nmap &> /dev/null; then
+        echo "nmap could not be found. Please install nmap to use this script."
+        exit 1
+    fi
+}
+
 # Check if nmap is installed
-if ! command -v nmap &> /dev/null
-then
-    echo "nmap could not be found. Please install nmap to use this script."
-    exit 1
-fi
+check_nmap_installed
 
 # Function to get the default gateway and determine the network subnet
 get_network_subnet() {
