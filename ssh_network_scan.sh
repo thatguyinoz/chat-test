@@ -9,6 +9,7 @@
 # Version 1.1:
 # - Added a function to dynamically determine the network subnet based on the default gateway.
 # - Updated the script to use the dynamically determined network subnet for scanning.
+# - Added comments for better understanding of the script.
 # Version 1.0:
 # - Initial release of the script.
 
@@ -41,11 +42,17 @@ NETWORK_RANGE=$(get_network_subnet)
 # Define the ports to scan
 PORTS="22,222,443,53,2222"
 
+# Define the ports to scan
+PORTS="22,222,443,53,2222"
+
 # Function to perform the SSH scan
 perform_ssh_scan() {
     echo "Scanning network $NETWORK_RANGE for SSH servers on ports $PORTS..."
     nmap -p $PORTS --open $NETWORK_RANGE | grep -E "open\s+ssh"
 }
+
+# Perform the scan
+perform_ssh_scan
 
 # Perform the scan
 perform_ssh_scan
